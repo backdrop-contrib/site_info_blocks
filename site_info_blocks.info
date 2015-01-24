@@ -1,0 +1,6 @@
+name = Site Info Blocks
+description = Provides separate blocks for Site Name, Logo and Slogan
+package = Blocks 
+
+backdrop = 1.x
+

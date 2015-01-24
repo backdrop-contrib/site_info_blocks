@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function site_info_blocks_block_info() {
+  $blocks['logo'] = array(
+    'info' => t('Logo block'),
+    'description' => t('The site logo.'),
+  );
+  $blocks['slogan'] = array(
+    'info' => t('Slogan block'),
+    'description' => t('The site slogan.'),
+  );
+  $blocks['site_name'] = array(
+    'info' => t('Site name block'),
+    'description' => t('THe site name.'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * Generate a block with a promotional link to BackdropCMS.org and
+ * all system menu blocks.
+ */
+function site_info_blocks_block_view($delta = '', $settings = array()) {
+  $site_config = config('system.core');
+  $block = array();
+  switch ($delta) {
+    case 'logo':
+      $block['subject'] = NULL;
+      $block['content'] = theme('site_info_logo',  array('logo' => backdrop_get_logo(), 'front_page' => url()));
+      return $block;
+    case 'slogan':
+      $block['subject'] = NULL;
+      $block['content'] = ($site_slogan = $site_config->get('site_slogan')) ? site_info_blocks_site_slogan($site_slogan) : '';
+      return $block;
+    case 'site_name':
+      $block['subject'] = NULL;
+      $block['content'] = ($site_name = $site_config->get('site_name')) ? site_info_blocks_site_name($site_name) : '';
+      return $block;
+  }
+}
+
+function site_info_blocks_site_slogan($site_slogan) {
+  $output = check_plain($site_slogan);
+  $output = theme('site_info_slogan', array('site_slogan' => $output, 'front_page' => url()));
+  return $output;
+}
+
+function site_info_blocks_site_name($site_name) {
+  $output = check_plain($site_name);
+  $output = theme('site_info_site_name', array('site_name' => $output, 'front_page' => url()));
+  return $output;
+}
+
+function site_info_blocks_theme() {
+  return array(
+    'site_info_logo' => array(
+      'variables' => array('logo' => NULL),
+      'template' => 'templates/site_info_logo', 
+    ),
+    'site_info_slogan' => array(
+      'variables' => array('site_slogan' => NULL),
+      'template' => 'templates/site_info_slogan', 
+    ),
+    'site_info_site_name' => array(
+      'variables' => array('site_name' => NULL),
+      'template' => 'templates/site_info_site_name', 
+    ),
+  );
+}
+
