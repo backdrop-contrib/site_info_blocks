@@ -1,3 +1,4 @@
+This module is deprecated by https://github.com/backdrop-contrib/blockify which has all the features here, plus more!
 
 SITE INFO BLOCKS MODULE
 =================
